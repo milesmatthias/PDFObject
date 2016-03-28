@@ -18,6 +18,7 @@ var PDFObject = function (obj){
         width = obj.width || "100%",
         height = obj.height || "100%",
         pdfOpenParams = obj.pdfOpenParams,
+        backupText = obj.backupText || "Your browser does not support viewing PDFs. Click here to view the PDF.",
         url,
         pluginTypeFound,
 
@@ -189,17 +190,26 @@ var PDFObject = function (obj){
             case "pdfOpenParams" : value = pdfOpenParams; break;
             case "pluginTypeFound" : value = pluginTypeFound; break;
             case "pdfobjectversion" : value = pdfobjectversion; break;
+            case "backupText" : value = backupText; break;
         }
 
         return value;
 
     };
 
+    backupLink = function() {
+      return [
+        '<a href="',
+        url,
+        '" alt="pdf">',
+        backupText,
+        '</a>'
+      ].join("");
+    };
 
     /* ----------------------------------------------------
        PDF Embedding functions
        ---------------------------------------------------- */
-
 
     embed = function(targetID){
 
@@ -224,7 +234,7 @@ var PDFObject = function (obj){
 
         }
 
-        targetNode.innerHTML = '<object    data="' +url +'" type="application/pdf" width="' +width +'" height="' +height +'"></object>';
+        targetNode.innerHTML = '<object    data="' +url +'" type="application/pdf" width="' +width +'" height="' +height +'">'+backupLink()+'</object>';
 
         return targetNode.getElementsByTagName("object")[0];
 
